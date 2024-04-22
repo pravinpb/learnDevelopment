@@ -1,6 +1,6 @@
 from flask import Flask, render_template, url_for, request, jsonify
 from flask.views import MethodView
-
+import psycopg2
 
 # testlist = {10,20,30,40,50,60,70,80,90,100}
 
