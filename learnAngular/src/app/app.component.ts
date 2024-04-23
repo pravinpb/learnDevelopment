@@ -2,8 +2,17 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  template :`
+  <!-- header -->
+  <app-header></app-header>
+
+  <!-- router -->
+  <router-outlet></router-outlet>
+
+  <!-- footer -->
+  <app-footer></app-footer>
+  
+  `
 })
 export class AppComponent {
   title = 'learnAngular';

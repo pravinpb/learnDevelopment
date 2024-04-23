@@ -1,1 +1,51 @@
-<p>contact works!</p>
+<div class="container">
+    <form [formGroup]="userForm">
+        <div class="row">
+            <div class="col-4">
+                <label for="">FirstName</label>
+                <input type="text" class="form-control" formControlName="firstname">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-4">
+                <label for="">LastName</label>
+                <input type="text" class="form-control" formControlName="lastname">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-4">
+                <label for="">Email</label>
+                <input type="text" class="form-control" formControlName="email">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-4">
+                <label for="">Mobile</label>
+                <input type="text" class="form-control" formControlName="mobile">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-4">
+                <label for="">Grade</label>
+                <input type="text" class="form-control" formControlName="grade">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-4">
+                <label for="">Gender</label>
+                <input type="text" class="form-control" formControlName="gender">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-6">
+                <button class="btn-success"  (click) = "onSubmit()" >Submit</button>
+            </div>
+        </div>
+    </form>
+</div>
