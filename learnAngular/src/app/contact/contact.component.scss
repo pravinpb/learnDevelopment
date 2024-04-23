@@ -11,22 +11,19 @@
 
 label {
     font-weight: bold;
-    display: inline-block;
-    width: 100px; /* Adjust width as needed */
 }
 
 input[type="text"] {
-    width: calc(100% - 110px); /* Adjust width as needed */
+    width: 100%;
     padding: 8px;
     border: 1px solid #ccc;
     border-radius: 4px;
     box-sizing: border-box;
-    display: inline-block;
 }
 
-.col-4,
-.col-6 {
-    width: 100%;
+.invalid-feedback {
+    color: #dc3545;
+    font-size: 80%;
 }
 
 .btn-success {
@@ -40,4 +37,8 @@ input[type="text"] {
 
 .btn-success:hover {
     background-color: #218838;
+}
+
+.is-invalid {
+    border-color: #dc3545 !important;
 }
