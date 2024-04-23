@@ -1,10 +1,12 @@
 # from app import conn
-from flask import Flask, render_template, url_for, request, jsonify
+from flask import Flask, render_template, url_for, request, jsonify,Response
 from flask.views import MethodView
 import psycopg2
 from psycopg2.extras import DictCursor
 import pandas as pd
+from app import app
 views = Flask(__name__)
+import json
 
 
 class learn(MethodView):
@@ -23,9 +25,9 @@ class learn(MethodView):
             cur.execute("SELECT * FROM studentDetails")
             data = cur.fetchall()
             conn.commit()
-        df = pd.DataFrame.from_records(list(data), columns = ['id', 'name', 'age', 'grade'])
+        df = pd.DataFrame.from_records(list(data), columns = ["id","firstname", "lastname", "email", "mobile", "grade", "gender"])
         data = df.to_dict('records')
-        return data
+        return Response(json.dumps(data), status=200, mimetype='application/json')
 
 
 
@@ -39,12 +41,16 @@ class learn(MethodView):
         
         data = request.get_json()
         for item in data:
-            name = item.get("name")
-            age = item.get("age")
+            firstname = item.get("firstname")
+            lastname = item.get("lastname")
+            email = item.get("email")
+            mobile = item.get("mobile")
+            gender = item.get("gender")
             grade = item.get("grade")
-            
+            id = item.get("id")
+
             cur = conn.cursor()
-            cur.execute("INSERT INTO studentDetails (name, age, grade) VALUES (%s,%s,%s);",(name, age, grade))
+            cur.execute("INSERT INTO studentDetails (firstname, lastname, email, mobile, gender, grade, id) VALUES (%s,%s,%s,%s,%s,%s);",(firstname, lastname, email, mobile, grade, gender))
         conn.commit()
         cur.close()
         conn.close()
@@ -64,13 +70,16 @@ class learn(MethodView):
         
         data = request.get_json()
         for item in data:
-            name = item.get("name")
-            age = item.get("age")
+            firstname = item.get("firstname")
+            lastname = item.get("lastname")
+            email = item.get("email")
+            mobile = item.get("mobile")
+            gender = item.get("gender")
             grade = item.get("grade")
             id = item.get("id")
             
             cur = conn.cursor()
-            cur.execute("UPDATE studentDetails SET name = %s, age = %s, grade = %s WHERE id = %s", (name, age, grade,id))
+            cur.execute("UPDATE studentDetails SET name = %s, age = %s, grade = %s WHERE id = %s", (id,firstname, lastname, email, mobile, grade, gender))
 
 
         conn.commit()
@@ -97,12 +106,8 @@ class learn(MethodView):
 
 
 product_view = learn.as_view('product_api')
-views.add_url_rule('/demo1', view_func=product_view, methods=['GET', 'POST', 'PUT', 'DELETE'])
+app.add_url_rule('/student', view_func=product_view, methods=['GET', 'POST', 'PUT', 'DELETE'])
 
-
-
-
-
-
-if __name__ == "__main__":
-    views.run(debug=True)
+@app.route('/')
+def home():
+    return 'heelo'
