@@ -3,7 +3,7 @@ from flask import Flask, render_template, url_for, request, jsonify
 from flask.views import MethodView
 import psycopg2
 from psycopg2.extras import DictCursor
-
+import pandas as pd
 views = Flask(__name__)
 
 
@@ -23,8 +23,9 @@ class learn(MethodView):
             cur.execute("SELECT * FROM studentDetails")
             data = cur.fetchall()
             conn.commit()
-        
-        return jsonify(data)
+        df = pd.DataFrame.from_records(list(data), columns = ['id', 'name', 'age', 'grade'])
+        data = df.to_dict('records')
+        return data
 
 
 
