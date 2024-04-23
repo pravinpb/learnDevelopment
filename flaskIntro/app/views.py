@@ -2,6 +2,7 @@
 from flask import Flask, render_template, url_for, request, jsonify
 from flask.views import MethodView
 import psycopg2
+from psycopg2.extras import DictCursor
 
 views = Flask(__name__)
 
@@ -18,12 +19,12 @@ class learn(MethodView):
             password="pravinpb",
             port="5200")
 
-        cur = conn.cursor()
-        cur.execute("SELECT * FROM studentDetails")
-        print(cur.fetchall())
-        conn.commit()
-        cur.close()
-        conn.close()
+        with conn.cursor(cursor_factory=DictCursor) as cur:
+            cur.execute("SELECT * FROM studentDetails")
+            data = cur.fetchall()
+            conn.commit()
+        
+        return jsonify(data)
 
 
 
@@ -36,21 +37,19 @@ class learn(MethodView):
             port="5200")
         
         data = request.get_json()
-        names = data.get("name", [])
-        ages = data.get("age", [])
-        grades = data.get("grade", [])
-        
-        values = list(zip(names, ages, grades))
-
-        cur = conn.cursor()
-        for i in range(len(values)):
-            cur.execute("INSERT INTO studentDetails (name, age, grade) VALUES (%s, %s, %s)", values[i])
+        for item in data:
+            name = item.get("name")
+            age = item.get("age")
+            grade = item.get("grade")
+            
+            cur = conn.cursor()
+            cur.execute("INSERT INTO studentDetails (name, age, grade) VALUES (%s,%s,%s);",(name, age, grade))
         conn.commit()
         cur.close()
         conn.close()
+        return "posted successfully"
 
     
-        # print(values)
         
 
 
@@ -63,37 +62,37 @@ class learn(MethodView):
             port="5200")
         
         data = request.get_json()
-        id = data.get("id", [])
-        name = data.get("name", [])
+        for item in data:
+            name = item.get("name")
+            age = item.get("age")
+            grade = item.get("grade")
+            id = item.get("id")
+            
+            cur = conn.cursor()
+            cur.execute("UPDATE studentDetails SET name = %s, age = %s, grade = %s WHERE id = %s", (name, age, grade,id))
 
-        values = list(zip(name,id))
-        
-        cur = conn.cursor()
-        for i in range(len(values)):
-            cur.execute("UPDATE studentDetails SET name = %s WHERE id = %s", values[i])
+
         conn.commit()
         cur.close()
         conn.close()
+        return "updated successfully"
 
 
-    def delete(self):
+    def delete(self, id):
         conn = psycopg2.connect(
             host="localhost",
             database="postgres",
             user="postgres",
             password="pravinpb",
-            port="5200")
-        
-        data = request.get_json()
-        id = data.get("id", [])
+            port="5200"
+        )
         
         cur = conn.cursor()
-        for i in range(len(id)):
-            cur.execute("DELETE FROM studentDetails WHERE id = %s", (id[i],))
+        cur.execute("DELETE FROM studentDetails WHERE id = %s", (id,))
         conn.commit()
         cur.close()
         conn.close()
-
+        return "deleted successfully"
 
 
 product_view = learn.as_view('product_api')
