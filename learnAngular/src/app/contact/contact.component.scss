@@ -31,6 +31,7 @@ input[type="text"], select.form-control {
     color: #fff;
     border: none;
     padding: 10px 20px;
+    margin-bottom: 30px;
     border-radius: 4px;
     cursor: pointer;
 }
@@ -41,4 +42,17 @@ input[type="text"], select.form-control {
 
 .is-invalid {
     border-color: #dc3545 !important;
+}
+
+.container {
+    position: relative; // Ensures the container takes at least the full viewport height
+}
+
+.form-container {
+    max-height: calc(10vh - 20px); // Adjusts the container height to be the full viewport height minus the footer height
+    padding: 1rem; // Optional: Adds some padding inside the container
+}
+
+.footerSpace {
+    margin-top: 20px;
 }

@@ -40,21 +40,22 @@ class learn(MethodView):
             port="5200")
         
         data = request.get_json()
-        for item in data:
-            firstname = item.get("firstname")
-            lastname = item.get("lastname")
-            email = item.get("email")
-            mobile = item.get("mobile")
-            gender = item.get("gender")
-            grade = item.get("grade")
-            id = item.get("id")
 
-            cur = conn.cursor()
-            cur.execute("INSERT INTO studentDetails (firstname, lastname, email, mobile, gender, grade, id) VALUES (%s,%s,%s,%s,%s,%s);",(firstname, lastname, email, mobile, grade, gender))
+
+        firstname = data["firstname"]
+        lastname = data["lastname"]
+        email = data["email"]
+        mobile = data["mobile"]
+        gender = data["gender"]
+        grade = data["grade"]
+
+        print(firstname, lastname, email, mobile)
+
+        with conn.cursor() as cur:
+            cur.execute("INSERT INTO studentDetails (firstname, lastname, email, mobile, gender, grade) VALUES (%s,%s,%s,%s,%s,%s);",
+                        (firstname, lastname, email, mobile, gender, grade))
         conn.commit()
-        cur.close()
-        conn.close()
-        return "posted successfully"
+        return "posted successfully", 201\
 
     
         
@@ -69,26 +70,25 @@ class learn(MethodView):
             port="5200")
         
         data = request.get_json()
-        for item in data:
-            firstname = item.get("firstname")
-            lastname = item.get("lastname")
-            email = item.get("email")
-            mobile = item.get("mobile")
-            gender = item.get("gender")
-            grade = item.get("grade")
-            id = item.get("id")
-            
-            cur = conn.cursor()
-            cur.execute("UPDATE studentDetails SET name = %s, age = %s, grade = %s WHERE id = %s", (id,firstname, lastname, email, mobile, grade, gender))
+        print(data)
+        firstname = data["firstname"]
+        lastname = data["lastname"]
+        email = data["email"]
+        mobile = data["mobile"]
+        gender = data["gender"]
+        grade = data["grade"]
+        id = data["id"]
 
+        print(firstname, lastname, email, mobile, id,gender, grade)
 
+        with conn.cursor() as cur:
+            cur.execute("UPDATE studentDetails SET firstname = %s, lastname = %s, email = %s, mobile = %s, gender = %s, grade = %s WHERE id = %s;",
+                (firstname, lastname, email, mobile, gender, grade, id))
         conn.commit()
-        cur.close()
-        conn.close()
-        return "updated successfully"
+        return "updated successfully", 201\
 
 
-    def delete(self, id):
+    def delete(self, student_id):
         conn = psycopg2.connect(
             host="localhost",
             database="postgres",
@@ -96,17 +96,17 @@ class learn(MethodView):
             password="pravinpb",
             port="5200"
         )
-        
-        cur = conn.cursor()
-        cur.execute("DELETE FROM studentDetails WHERE id = %s", (id,))
+
+        with conn.cursor() as cur:
+            cur.execute("DELETE FROM studentDetails WHERE id = %s;", (student_id,))
         conn.commit()
-        cur.close()
-        conn.close()
-        return "deleted successfully"
+        return "deleted successfully", 200
 
 
 product_view = learn.as_view('product_api')
-app.add_url_rule('/student', view_func=product_view, methods=['GET', 'POST', 'PUT', 'DELETE'])
+app.add_url_rule('/student', view_func=product_view, methods=['GET', 'POST', 'PUT'])
+app.add_url_rule('/student/<int:student_id>', view_func=product_view, methods=['DELETE'])
+
 
 @app.route('/')
 def home():
