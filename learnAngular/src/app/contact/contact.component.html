@@ -48,7 +48,10 @@
                     Mobile number must be at least 10 characters long.
                 </div>
                 <div *ngIf="userForm.get('mobile')?.touched && userForm.get('mobile')?.errors?.['maxlength']" class="invalid-feedback">
-                    Mobile number cannot be more than 15 characters long.
+                    Mobile number cannot be more than 10 characters long.
+                </div>
+                <div *ngIf="userForm.get('mobile')?.touched && userForm.get('mobile')?.errors?.['pattern']" class="invalid-feedback">
+                    Mobile number should be a integer.
                 </div>
             </div>
         </div>
@@ -67,8 +70,10 @@
         <div class="row">
             <div class="col-4">
                 <label for="gender">Gender</label>
-                <input type="text" class="form-control" formControlName="gender" 
-                [class.is-invalid]="userForm.get('gender')?.invalid && userForm.get('gender')?.touched">
+                <select class="form-control" formControlName="gender" 
+                        [class.is-invalid]="userForm.get('gender')?.invalid && userForm.get('gender')?.touched">
+                    <option *ngFor="let gender of genders" [value]="gender">{{gender}}</option>
+                </select>
                 <div *ngIf="userForm.get('gender')?.touched && userForm.get('gender')?.errors?.['required']" class="invalid-feedback">
                     Gender is required.
                 </div>
@@ -77,7 +82,7 @@
 
         <div class="row">
             <div class="col-6">
-                <button class="btn btn-success" (click)="onSubmit()" [disabled]="!userForm.valid">Submit</button>
+                <button class="btn btn-success" (click)="onSubmit()">Submit</button>
             </div>
         </div>
     </form>

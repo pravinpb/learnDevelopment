@@ -21,12 +21,26 @@ getStudentDetails() {
   this.http.get('http://localhost:5000/student').subscribe( {
     next: (response) => {
       this.dataSource = response;
-      console.log(this.dataSource)
+      console.log("Suceess")
     },
     error: (error) => {
       console.error(error)
     }  
   });
+}
+addStudent() {
+  // Logic to add a new student
+  console.log('Add Student');
+}
+
+editStudent() {
+  // Logic to edit the selected student
+  console.log('Edit Student');
+}
+
+deleteStudent() {
+  // Logic to delete the selected student
+  console.log('Delete Student');
 }
 }
 
