@@ -16,6 +16,8 @@ import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { HomeComponent } from './home/home.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { FilterPipe } from './filter.pipe';
+// import { Ng2SearchPipeModule } from 'ng2-search-filter';
 
 
 
@@ -28,7 +30,8 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
     AboutComponent,
     HeaderComponent,
     FooterComponent,
-    HomeComponent
+    HomeComponent,
+    FilterPipe
   ],
   imports: [
     BrowserModule,
@@ -37,7 +40,8 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
     ReactiveFormsModule,
     HttpClientModule,
     MatTableModule,
-    MatIconModule
+    MatIconModule,
+    // Ng2SearchPipeModule
   ],
   providers: [
     provideAnimationsAsync('noop')

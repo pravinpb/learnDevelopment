@@ -13,7 +13,7 @@ import { SharedService } from '../shared/shared.service';
 export class AboutComponent {
   displayedColumns: string[] = ['id', 'firstname', 'lastname', 'email', 'mobile', 'grade', 'gender', 'edit', 'delete'];
   dataSource: any = [];
-
+  searchText: any;
   pass_message: any = [];
   delete_message: any = [];
 
@@ -22,6 +22,7 @@ export class AboutComponent {
   console.log(this.dataSource)
   this.getStudentDetails();
 }
+
 onAddNew(){
   this.router.navigate(['/contact']);
 }
