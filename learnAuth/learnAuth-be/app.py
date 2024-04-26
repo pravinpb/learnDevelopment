@@ -93,11 +93,7 @@ def get_one_user(current_user,public_id):
     return data
 
 @app.route('/user', methods=['POST'])
-@token_required
-def create_user(current_user):
-
-    if not current_user.get('admin'):
-        return jsonify({'message': 'Cannot perform that function!'}), 403
+def create_user():
     
     conn = psycopg2.connect(
         host="localhost",
@@ -188,6 +184,59 @@ def login():
 
 
 
+@app.route('/todo', methods=['GET'])
+@token_required
+def get_all_todos(current_user):
+
+    conn = psycopg2.connect(
+        host="localhost",
+        database="postgres",
+        user="postgres",
+        password="pravinpb",
+        port="5200")
+    
+    with conn.cursor(cursor_factory=DictCursor) as cur:
+        cur.execute("SELECT * FROM tasklist WHERE user_id = %s;", (current_user[0],))
+        data = cur.fetchall()
+
+    return jsonify({'message': 'All todos', 'data': data})
+
+
+
+@app.route('/todo/<todo_id>', methods=['GET'])
+@token_required
+def get_one_todos(current_user, todo_id):
+    return jsonify({'message': 'One todo'})
+
+@app.route('/todo', methods=['POST'])
+@token_required
+def create_todos(current_user):
+
+    conn = psycopg2.connect(
+        host="localhost",
+        database="postgres",
+        user="postgres",
+        password="pravinpb",
+        port="5200")
+    
+    data = request.get_json()
+    print(data)
+    print(current_user)
+    with conn.cursor(cursor_factory=DictCursor) as cur:
+        cur.execute("INSERT INTO tasklist (text,complete,user_id) VALUES (%s,%s,%s);", (data['text'],data['complete'],current_user[0]))
+        conn.commit()
+
+    return jsonify({'message': 'Todo created'})
+
+@app.route('/todo/<todo_id>', methods=['PUT'])
+@token_required
+def update_todos(current_user, todo_id):
+    return jsonify({'message': 'Todo updated'})
+
+@app.route('/todo/<todo_id>', methods=['DELETE'])
+@token_required
+def delete_todos(current_user, todo_id):
+    return jsonify({'message': 'Todo deleted'})
 
 
 # @app.route('/unprotected')
