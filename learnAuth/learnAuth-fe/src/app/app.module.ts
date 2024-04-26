@@ -1,9 +1,10 @@
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
 import { LoginComponent } from './component/login/login.component';
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule, OnInit } from '@angular/core';
+import { RouterModule } from '@angular/router';
+
+import { AppComponent } from './app.component';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -12,9 +13,13 @@ import { LoginComponent } from './component/login/login.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    RouterModule,
+    FormGroup,
+    FormControl,
+    Validators
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
+
 export class AppModule { }
