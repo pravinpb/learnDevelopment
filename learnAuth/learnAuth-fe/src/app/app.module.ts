@@ -1,25 +1,37 @@
-import { LoginComponent } from './component/login/login.component';
+import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, OnInit } from '@angular/core';
-import { RouterModule } from '@angular/router';
 
+import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { LoginComponent } from './conponents/login/login.component';
+import { LayoutsComponent } from './conponents/layouts/layouts.component';
+import { DashboardComponent } from './conponents/dashboard/dashboard.component';
+import { FormsModule } from '@angular/forms';
+import { HTTP_INTERCEPTORS, HttpClientModule, HttpHeaders } from '@angular/common/http';
+import { customerInterceptor } from './services/customer.interceptor';
+import { SignupComponent } from './signup/signup.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent
+    LoginComponent,
+    LayoutsComponent,
+    DashboardComponent,
+    SignupComponent
   ],
   imports: [
     BrowserModule,
-    RouterModule,
-    FormGroup,
-    FormControl,
-    Validators
+    AppRoutingModule,
+    FormsModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: customerInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
-
 export class AppModule { }
